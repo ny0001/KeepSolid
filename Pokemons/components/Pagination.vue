@@ -48,12 +48,12 @@
           return this.$store.state.length
         },
         set() {
-          this.$store.dispatch('mathPaginationLength')
+          this.$store.dispatch('countPaginationLength')
         }
       },
       currentPage: {
         get() {
-          return this.$store.state.currentPage
+          return Number(this.$route.query.page)
         },
         set(value) {
           this.$store.dispatch('changeCurrentPage', value);

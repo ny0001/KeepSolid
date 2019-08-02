@@ -44,7 +44,8 @@
     methods: {
       showInfo(id) {
         this.$store.dispatch('selectedPokemon', id);
-        this.$router.push('/id/' + id);
+        // this.$router.push({ path: `/id/${id}`, name: 'id' });
+        this.$router.push(`/id/${id}`);
       }
     },
     computed: {

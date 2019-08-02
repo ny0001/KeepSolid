@@ -8,7 +8,7 @@
         <div class="title-wr">
           <h1 class="title">Pokemon Info</h1>
         </div>
-        <div class="inner-wr">
+        <div class="inner-wr" v-if="selectedPokemon.data">
           <pokemon v-if="selectedPokemon && selectedPokemon.data.sprites"
             :id="selectedPokemon.data.id"
             :height="selectedPokemon.data.height"
@@ -155,20 +155,22 @@
 
   export default  {
     name: 'pokemon-info',
-    // props: [],
     components: {
       Pokemon
+    },
+    beforeCreate() {
+
     },
     mounted() {
 
     },
     data() {
       return {
-        init: false
+
       }
     },
     validate({params}) {
-      return !!params.id
+      return /^\d+$/.test(params.id)
     },
     methods: {
       goBack() {

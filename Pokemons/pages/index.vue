@@ -53,11 +53,24 @@ export default {
       displayPerPage: 10,
     }
   },
+  beforeCreate() {
+    const offset = this.$route.query.offset;
+    const limit = this.$route.query.limit;
+    const page = (offset / limit) + 1;
+    if(limit && offset) {
+      this.$store.dispatch('offset', offset);
+      this.$store.dispatch('actionPerPage', limit);
+      this.$router.push(`/?offset=${offset}&limit=${limit}&page=${page}`);
+    } else {
+      this.$router.push(`/?offset=0&limit=10&page=1`);
+      this.$store.dispatch('getPokemons', {root: true});
+    }
+  },
   mounted() {
     this.displayPerPage = this.$store.getters.getElemsPerPage;
   },
   created() {
-    this.$store.dispatch('getPokemons', {root: true});
+    // this.$store.dispatch('getPokemons', {root: true});
   },
   // async fetch({store, params}) {
   //   await store.dispatch('getPokemons', {root: true});
@@ -89,6 +102,7 @@ export default {
     perPage(value) {
       const count = value || 10;
       this.$store.dispatch('actionPerPage', count);
+      this.$router.push(`/?offset=${this.$store.state.offset}&limit=${count}`);
     },
   },
 }
