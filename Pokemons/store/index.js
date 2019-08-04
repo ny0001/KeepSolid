@@ -4,7 +4,7 @@ import axios from 'axios'
 export const state = () => ({
   pokemonsList: [],
   quantity: 0,
-  perPage: 10,
+  limit: 10,
   offset: 0,
   length: 0,
   currentPage: 1,
@@ -18,7 +18,7 @@ export const actions =  {
     return data;
   },
   async getPokemons(context) {
-    const URL = `https://pokeapi.co/api/v2/pokemon/?offset=${context.state.offset}&limit=${context.state.perPage}`;
+    const URL = `https://pokeapi.co/api/v2/pokemon/?offset=${context.state.offset}&limit=${context.state.limit}`;
     const data = await context.dispatch('GET', { url: URL},{ root: true });
     context.commit('setQuantity', data.data.count); // set total Quantity
     context.dispatch('countPaginationLength');
@@ -34,7 +34,6 @@ export const actions =  {
   async getById(context, pokemonID) {
     const ID = context.state.selectedPokemon.id || pokemonID;
     const data = await context.dispatch('GET', {url: `https://pokeapi.co/api/v2/pokemon/${ID}`},{root: true});
-    // console.log(data)
     return context.commit('setPokemon', data);
   },
   async getTypes(context) {
@@ -44,7 +43,6 @@ export const actions =  {
         return context.dispatch('GET', {url: item.type.url} ,{root: true});
       })
     );
-    console.log(types)
     return await context.commit('setPokemonTypes', types);
   },
   async getStats(context) {
@@ -74,28 +72,28 @@ export const actions =  {
     const data = await context.dispatch('GET',
       {url: `${context.state.selectedPokemon.data.location_area_encounters}`}, {root: true});
     return await context.commit('setPokemonLocation', data.data);
-    // console.log(data.data)
   },
   async getSpecies(context) {
     const data = await context.dispatch('GET', {url: `${context.state.selectedPokemon.data.species.url}`}, {root: true});
     return await context.commit('setPokemonSpecies', data.data);
   },
 // requests end
-  async actionPerPage(context, perPage) {
-    context.commit('setPerPage', perPage);
+  async actionLimit(context, limit) {
+    context.commit('setLimit', limit);
     return await context.dispatch('getPokemons');
   },
   async changeCurrentPage(context, page) {
     context.commit('setCurrentPage', page);
-    const offset = context.state.perPage * (context.state.currentPage - 1);
+    const offset = context.state.limit * (context.state.currentPage - 1);
     context.commit('setOffset', offset);
+    this.$router.push(`/?offset=${offset}&limit=${context.state.limit}&page=${page}`);
     await context.dispatch('getPokemons');
   },
   actionQuantity(context, quantity) {
     context.commit('setQuantity', quantity);
   },
   countPaginationLength: function (context) {
-    const count = Math.floor(context.state.quantity / context.state.perPage);
+    const count = Math.floor(context.state.quantity / context.state.limit);
     context.commit('setLength', count);
   },
   selectedPokemon(context, pokemon) {
@@ -119,8 +117,8 @@ export const mutations =  {
   setOffset(state, count) {
     state.offset = count;
   },
-  setPerPage(state, count) {
-    state.perPage = count;
+  setLimit(state, count) {
+    state.limit = count;
   },
   setPokemon(state, pokemon) {
     state.selectedPokemon = pokemon;
@@ -148,9 +146,8 @@ export const getters =  {
   getPokemonsList: state => state.pokemonsList,
   getSelectValue: state => state.selectValue,
   getQuantity: state => state.quantity,
-  getElemsPerPage: state => state.perPage,
+  getElemsLimit: state => state.limit,
   getPokemon: state => state.selectedPokemon,
-
   getLength: state => state.length, // not used
   getPage: state => state.currentPage, // not used
 }

@@ -1,12 +1,11 @@
 <template>
   <div class="main-wr">
     <div class="header">
-      <!-- <v-btn @click="get">GET POKEMONS</v-btn> -->
-    <p class="info">Pokemons:{{quantity}}</p>
-    <p class="info">Page: {{ this.$store.state.currentPage}} / {{ this.$store.getters.getLength }}</p>
-    <p class="info"> {{ this.$store.getters.getPokemon.name }}</p>
+      <p class="info">Pokemons: {{quantity}}</p>
+      <p class="info">Page: {{ currentPage }} / {{ getLength }}</p>
+      <p class="info"> {{ getPokemon.name }}</p>
       <div class="select-wr">
-        <v-select label="Select" v-model="displayPerPage" :options="selectOptions" @input="perPage"></v-select>
+        <v-select label="Select" v-model="displayLimit" :options="selectOptions" @input="Limit"></v-select>
       </div>
       <v-icon class="select-type" @click="toggleStyle()">fas {{selectIcon}}</v-icon>
     </div>
@@ -38,7 +37,7 @@ import Vue from 'vue'
 import vSelect from 'vue-select'
 Vue.component('v-select', vSelect)
 
-import {mapActions, mapState} from 'vuex';
+import {mapActions, mapState, mapGetters} from 'vuex';
 export default {
   components: {
     Pokemon,
@@ -46,20 +45,20 @@ export default {
   },
   data() {
     return {
-      selectOptions: [1, 3, 5, 10, 20 , 30 , 40 , 50],
+      selectOptions: [1, 3, 5, 10, 20, 30, 40, 50],
       selectIcon: 'fa-th-list',
       isListActive: true,
       isTableActive: false,
-      displayPerPage: 10,
+      displayLimit: 10,
     }
   },
   beforeCreate() {
     const offset = this.$route.query.offset;
     const limit = this.$route.query.limit;
-    const page = (offset / limit) + 1;
+    const page = Math.floor(offset / limit) + 1;
     if(limit && offset) {
-      this.$store.dispatch('offset', offset);
-      this.$store.dispatch('actionPerPage', limit);
+      this.$store.dispatch('actionLimit', limit);
+      this.$store.dispatch('changeCurrentPage', page);
       this.$router.push(`/?offset=${offset}&limit=${limit}&page=${page}`);
     } else {
       this.$router.push(`/?offset=0&limit=10&page=1`);
@@ -67,26 +66,23 @@ export default {
     }
   },
   mounted() {
-    this.displayPerPage = this.$store.getters.getElemsPerPage;
+    this.displayLimit = this.$store.getters.getElemsLimit;
   },
   created() {
-    // this.$store.dispatch('getPokemons', {root: true});
+
   },
-  // async fetch({store, params}) {
-  //   await store.dispatch('getPokemons', {root: true});
-  // },
   computed: {
-    // list() { return this.$store.getters.getPokemonsList }, // return this.$store.getters['pokemons/getPokemonsList']
-    // quantity() { return this.$store.getters.getQuantity }, // this.$store.getters['pagination/getQuantity']
     ...mapState([
       'pokemonsList',
-      'quantity'
+      'quantity',
+      'currentPage'
+    ]),
+    ...mapGetters([
+      'getLength',
+      'getPokemon'
     ])
   },
   methods: {
-    // ...mapActions([
-    //     'getPokemons'
-    // ]),
     toggleStyle() {
       this.isListActive = !this.isListActive;
       this.isTableActive = !this.isTableActive;
@@ -99,10 +95,10 @@ export default {
     toggle: function() {
       this.isListActive = !this.isListActive;
     },
-    perPage(value) {
+    Limit(value) {
       const count = value || 10;
-      this.$store.dispatch('actionPerPage', count);
-      this.$router.push(`/?offset=${this.$store.state.offset}&limit=${count}`);
+      this.$store.dispatch('actionLimit', count);
+      this.$router.push(`/?offset=${this.$store.state.offset}&limit=${count}&page=${this.$store.state.currentPage}`);
     },
   },
 }
@@ -142,6 +138,7 @@ html {
 .header {
   height: 100px;
   margin-bottom: 50px;
+  border-radius: 10px;
   padding: 10px 30px;
   display: flex;
   justify-content: space-between;
@@ -156,7 +153,6 @@ html {
 }
 .content-wr {
   position: relative;
-  // background-color: $background;
   border: 1px solid $border;
   border-radius: 10px;
   padding: 30px;
@@ -207,9 +203,11 @@ html {
   margin: 15px 15px;
 }
 
-
-
-
+@media (max-width: 1300px) {
+  .main-wr {
+    max-width: 95%;
+  }
+}
 
 @media (max-width: 420px) {
 
