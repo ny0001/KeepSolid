@@ -84,7 +84,8 @@
   height: 100%;
   border: 1px solid $border;
   border-radius: 10px;
-  background-color: #424242
+  background-color: #424242;
+  cursor: pointer;
   // background-color: $cardBackground;
   // box-shadow: 0px 0px 9px 6px rgba(250, 250, 250, 0.8);
 }
@@ -117,7 +118,6 @@
 }
 .rotate-wr {
   margin: 15px 0;
-  // border: 1px solid $border;
   perspective: 1000px;
   -webkit-perspective: 1000px;
 }
