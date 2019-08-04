@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:class="['modal-wrapper', { active: this.$store.getters.modalStateStatus }]">
+    <div v-bind:class="['modal-wrapper', { active: modalStateStatus }]">
         <div class="modal">
             <p>Are you sure you want to permanently remove this item ?</p>
             <div class="button-wrapp">
@@ -9,11 +9,12 @@
                 <button class="btn-yes" @click="modalBtnYes()">Yes</button>
             </div>
         </div>
-        <div v-bind:class="['overlay', { active: this.$store.getters.modalStateStatus }]" @click="closeModal()"></div>
+        <div v-bind:class="['overlay', { active: modalStateStatus }]" @click="closeModal()"></div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'Modal',
   data() {
@@ -22,7 +23,9 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters([
+      'modalStateStatus',
+    ])
   },
   methods: {
       closeModal() {
@@ -38,10 +41,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap');
-    @mixin font-family {
-        font-family: 'Nunito Sans', sans-serif;
-    }
+    @import 'src/assets/styles.scss';
     @mixin button-reset {
         background: transparent;
         border: none;
@@ -90,7 +90,7 @@ export default {
     border-radius: 5px;
     border: 1px solid $border;
     >p {
-        @include font-family;
+        @include font;
         font-size: 20px;
         color: #000;
     }
@@ -99,7 +99,7 @@ export default {
     float: right;
     margin: 0 10px;
     button {
-        @include font-family;
+        @include font;
         @include button-reset;
         height: 100%;
         padding: 5px 20px;

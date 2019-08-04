@@ -4,21 +4,20 @@
     <div class="main-wrapper">
         <div class="header">
           <p class="user">{{ Email }}</p>
-          <!-- <p>Mail from Store: {{this.$store.getters.getMail}}</p> -->
         <div class="button-wr">
-            <button class="logout" @click="logout()">Logout</button>
+          <button class="logout" @click="logout()">Logout</button>
         </div>
         </div>
         <div class="content-wr">
             <div class="content-inner">
                 <ul class="content-ul">
-                  <li v-for="todo in this.$store.getters.all_TODOs" :key="todo.id">
+                  <li v-for="todo in all_TODOs" :key="todo.id">
                     <task name="task" :todo="todo"></task>
                   </li>
                 </ul>
             </div>
             <button class="addTask" @click="addTaskButton()">+</button> 
-            <drawer v-if="this.$store.getters.drawerStateStatus"></drawer>
+            <drawer v-if="drawerStateStatus"></drawer>
             <modal></modal>
         </div>
     </div>
@@ -26,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Drawer from '@/components/Drawer.vue';
 import Task from '@/components/Task.vue';
 import Modal from '@/components/Modal.vue';
@@ -52,7 +52,10 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters([
+      'all_TODOs',
+      'drawerStateStatus'
+    ])
   },
   methods: {
     logout() {
@@ -71,10 +74,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap');
-    @mixin font-family {
-      font-family: 'Nunito Sans', sans-serif;
-    }
+    @import 'src/assets/styles.scss';
     @mixin button-reset {
       background: transparent;
       border: none;
@@ -137,7 +137,7 @@ export default {
   }
   .logout {
     @include button-reset;
-    @include font-family;
+    @include font;
     width: 200px;
     height: 100%;
     border-radius: 6px;
@@ -175,7 +175,7 @@ export default {
     }
   }
   .user {
-    @include font-family;
+    @include font;
     color: #b9bdc3;
     font-size: 24px;
   }
@@ -225,10 +225,10 @@ export default {
     }
     @media (max-width: 360px) {
       .main-wrapper {
-          max-width: 320px;
+        max-width: 320px;
       }
       .task-wr {
-          width: 275px; 
+        width: 275px; 
       }
     }
 

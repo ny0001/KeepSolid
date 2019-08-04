@@ -50,9 +50,6 @@ const HTTP_Requests = {
             const url = 'https://raysael.herokuapp.com/todo/';
             axios
                 .patch(`${url}${taskID}`, taskObj)
-                .then(response =>  {
-                    console.log(response)
-                })
                 .catch((err) => {
                     console.error(err);
                     alert('Something wrong...');

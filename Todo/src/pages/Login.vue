@@ -1,26 +1,26 @@
 <template>
-    <section id="section-login">
-      <div class="login">
-          <div class="login-wr">
-              <div class="login-card">
-                  <div class="avatar">
-                      <img class="avatar-img" src="user.png" alt="user-icon">
-                  </div>
-                  <form @submit.prevent="formSubmit()" class="form-register">
-                    <div class="form-inner-wr">
-                      <div class="input-wr">
-                          <input v-model="inputVal" type="text" :class="['email', {isValid, hasError}]" placeholder="Enter E-Mail" @input="removeClass()">
-                          <p class="message" :class="{active: showMessage}">Check your E-Mail...</p>
-                      </div>
-                      <div class="button-wr">
-                          <button class="submit-btn">Submit</button>
-                      </div>
-                    </div>
-                  </form>
-              </div>
+  <section id="section-login">
+    <div class="login">
+      <div class="login-wr">
+        <div class="login-card">
+          <div class="avatar">
+            <img class="avatar-img" src="user.png" alt="user-icon">
           </div>
+          <form @submit.prevent="formSubmit()" class="form-register">
+            <div class="form-inner-wr">
+              <div class="input-wr">
+                <input v-model="inputVal" type="text" :class="['email', {isValid, hasError}]" placeholder="Enter E-Mail" @input="removeClass()">
+                <p class="message" :class="{active: showMessage}">Check your E-Mail...</p>
+              </div>
+              <div class="button-wr">
+                <button class="submit-btn">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -40,24 +40,24 @@ export default {
   },
   methods: {
     formSubmit() {
-        const mail = this.inputVal;
-        const re = /^((\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}))$/;
-        const valid = re.test(mail);
+      const mail = this.inputVal;
+      const re = /^((\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}))$/;
+      const valid = re.test(mail);
 
-        if (valid) {
-            this.isValid = true;
-            this.hasError = false;
-            this.successRegistration(mail);
-        } else {
-            this.isValid = false;
-            this.hasError = true;
-            this.showMessage = true;
-        }
+      if (valid) {
+        this.isValid = true;
+        this.hasError = false;
+        this.successRegistration(mail);
+      } else {
+        this.isValid = false;
+        this.hasError = true;
+        this.showMessage = true;
+      }
     },
     removeClass() {
-        this.isValid = false;
-        this.hasError = false;
-        this.showMessage = false;
+      this.isValid = false;
+      this.hasError = false;
+      this.showMessage = false;
     },
     successRegistration(mail) {
       localStorage.setItem('login', JSON.stringify(mail));
@@ -72,10 +72,7 @@ export default {
 
 
 <style scoped lang="scss">
-    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap');
-    @mixin font-family {
-      font-family: 'Nunito Sans', sans-serif;
-    }
+    @import 'src/assets/styles.scss';
     $cardWidth: 370px;
     $cardHeight: 450px;
     $background: #f8f9fa;
@@ -121,7 +118,7 @@ export default {
       width: 200px;
     }
     .email {
-      @include font-family;
+      @include font;
       width: 100%;
       height: 40px;
       border-radius: 5px;
@@ -137,7 +134,7 @@ export default {
       box-sizing: border-box;
       color: #000;
       &::placeholder {
-        @include font-family;
+        @include font;
         font-size: 17px;
         color: $textColor;
       }
@@ -161,7 +158,7 @@ export default {
       margin-top: 30px;
     }
     .submit-btn {
-      @include font-family;
+      @include font;
       width: 100%;
       height: 40px;
       background: transparent;
@@ -184,7 +181,7 @@ export default {
       }
     }
     .message {
-      @include font-family;
+      @include font;
       color: red;
       font-size: 16px;
       font-weight: bold;

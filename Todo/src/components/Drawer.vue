@@ -1,28 +1,32 @@
 <template>
-    <div class="drawer-main-wr">
-      <div v-bind:class="['drawer-wrapp', { open: this.$store.getters.drawerStateStatus }]">
-          <div class="drawwer-inner">
-              <div class="title-wr">
-                  <label for="title" class="label">Title</label>
-                  <input type="text" class="title" placeholder="enter title" v-model="drawerTitle">
-              </div>
-              <div class="description-wr">
-                  <label for="textarea" class="label">Description</label>
-                  <textarea class="textarea" placeholder="ToDo:" maxlength="1000" v-model="drawerDescription"></textarea>
-              </div>
-              <div class="desc-button-wr">
-                  <button class="desc-submit-btn" @click="drawerSUBMIT()">Submit</button>
-              </div>
-              <div class="close-wr">
-                  <button class="close" @click="closeDrawerInComponent()">x</button>
-              </div>
+  <div class="drawer-main-wr">
+    <div v-bind:class="['drawer-wrapp', { open: drawerStateStatus }]">
+      <div class="drawwer-inner">
+        <form class="form-drawer" @submit.prevent="drawerSUBMIT()">
+          <div class="title-wr">
+            <label for="title" class="label">Title</label>
+            <input type="text" class="title" placeholder="enter title" v-model="drawerTitle">
           </div>
+          <div class="description-wr">
+            <label for="textarea" class="label">Description</label>
+            <textarea class="textarea" placeholder="ToDo:" maxlength="1000" v-model="drawerDescription"></textarea>
+          </div>
+          <div class="desc-button-wr">
+            <button class="desc-submit-btn">Submit</button>
+          </div>
+          <div class="close-wr">
+            <button class="close" @click="closeDrawerInComponent()">x</button>
+          </div>
+        </form>
       </div>
-      <div v-bind:class="['overlay-drawer', { active: this.$store.getters.drawerStateStatus }]" @click="closeDrawerInComponent()"></div>
     </div>
+    <div v-bind:class="['overlay-drawer', { active: drawerStateStatus }]" @click="closeDrawerInComponent()"></div>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Drawer',
   data() {
@@ -36,7 +40,9 @@ export default {
     this.drawerDescription = this.$store.getters.getDrawerDescription;
   },
   computed: {
-
+    ...mapGetters([
+      'drawerStateStatus'
+    ])
   },
   methods: {
     closeDrawerInComponent() {
@@ -56,10 +62,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap');
-    @mixin font-family {
-      font-family: 'Nunito Sans', sans-serif;
-    }
+    @import 'src/assets/styles.scss';
     @mixin button-reset {
       background: transparent;
       border: none;
@@ -88,7 +91,7 @@ export default {
     border-right: 1px solid #e7e8ea;
     transform: translateX(-100%);
     &.open {
-        transform: translateX(0);
+      transform: translateX(0);
     }
   }
   .drawwer-inner {
@@ -102,7 +105,7 @@ export default {
     margin: 20px 0;
   }
   .textarea {
-    @include font-family;
+    @include font;
     height: 120px;
     resize: none;
     background-color: $background;
@@ -116,7 +119,7 @@ export default {
     box-sizing: border-box;
     color: #000;
     &::placeholder {
-      @include font-family;
+      @include font;
       font-size: 17px;
       color: $textColor;
     }
@@ -128,7 +131,7 @@ export default {
   }
   .desc-submit-btn {
     @include button-reset;
-    @include font-family;
+    @include font;
     width: 120px;
     height: 100%;
     border-radius: 6px;
@@ -149,7 +152,7 @@ export default {
   }
   .close {  
     @include button-reset;
-    @include font-family;
+    @include font;
     width: 45px;
     height: 45px;
     font-size: 30px;
@@ -164,11 +167,11 @@ export default {
     }
   }
   .label {
-    @include font-family;
+    @include font;
     margin-left: 15px;
   }
   .title {
-      @include font-family;
+      @include font;
       width: 100%;
       height: 40px;
       border-radius: 5px;
@@ -183,7 +186,7 @@ export default {
       box-sizing: border-box;
       color: #000;
       &::placeholder {
-        @include font-family;
+        @include font;
         font-size: 17px;
         color: $textColor;
       }
