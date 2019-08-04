@@ -1,5 +1,6 @@
-# todo
-
+# todo Vue.js
+Link: https://yura747.github.io/todoVUE
+ 
 ## Project setup
 ```
 npm install
