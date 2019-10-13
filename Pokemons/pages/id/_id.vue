@@ -252,4 +252,16 @@ $contentMaxWidth: 1200px;
   background-color: gray;
   margin: 0 3px;
 }
+
+@media (max-width: 595px) {
+  .card-wr {
+      float: none;
+      margin: 0 auto;
+  }
+  .button-wr {
+    top: 0px;
+    right: 10px;
+  }
+}
+
 </style>

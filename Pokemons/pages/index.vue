@@ -2,10 +2,10 @@
   <div class="main-wr">
     <div class="header">
       <p class="info">Pokemons: {{quantity}}</p>
-      <p class="info">Page: {{ currentPage }} / {{ getLength }}</p>
+      <p class="info page">Page: {{ getPage }} / {{ getLength }}</p>
       <p class="info"> {{ getPokemon.name }}</p>
       <div class="select-wr">
-        <v-select label="Select" v-model="displayLimit" :options="selectOptions" @input="Limit"></v-select>
+         <v-select label="Outlined style" outlined v-model="displayLimit" :options="selectOptions" @input="Limit"></v-select>
       </div>
       <v-icon class="select-type" @click="toggleStyle()">fas {{selectIcon}}</v-icon>
     </div>
@@ -79,7 +79,8 @@ export default {
     ]),
     ...mapGetters([
       'getLength',
-      'getPokemon'
+      'getPokemon',
+      'getPage'
     ])
   },
   methods: {
@@ -97,8 +98,11 @@ export default {
     },
     Limit(value) {
       const count = value || 10;
+      const offset = this.$route.query.offset;
+      const page = Math.floor(offset / count) + 1;
       this.$store.dispatch('actionLimit', count);
-      this.$router.push(`/?offset=${this.$store.state.offset}&limit=${count}&page=${this.$store.state.currentPage}`);
+      this.$store.dispatch('changeCurrentPage', page);
+      this.$router.push(`/?offset=${offset}&limit=${count}&page=${page}`);
     },
   },
 }
@@ -124,9 +128,22 @@ html {
   $textColor: #b9bdc3;
   $contentMaxWidth: 1200px;
 .select-wr {
+  width: 100px;
   .v-select{
-    background-color: #fff;
-    border: none;
+    background-color: transparent;
+    border: 1px solid #e7e8ea;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .vs__selected {
+    color: #fff;
+    font-weight: bold;
+  }
+  .vs__open-indicator {
+    fill: #fff;
+  }
+  .vs__clear {
+    fill: #fff;
   }
 }
 .select-type {
@@ -209,18 +226,28 @@ html {
   }
 }
 
-@media (max-width: 420px) {
-
+@media (max-width: 600px) {
+  .header {
+    padding: 10px 10px;
+  }
 }
-@media (max-width: 375px) {
-
+@media (max-width: 595px) {
+  .info {
+    &.page {
+      display: none;
+    }
+  }
+  .content-wr {
+    padding: 30px 0;
+  }
+  .content-li {
+    margin: 15px auto;
+  }
+  .content-ul.list .card-wr {
+    width: 90%;
+    margin: 0 auto;
+  }
 }
-@media (max-width: 360px) {
-
-}
-
-
-
 
 </style>
 

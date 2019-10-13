@@ -12,7 +12,7 @@
                   :length="length"
                   prev-icon="far fa-caret-square-left"
                   next-icon="far fa-caret-square-right"
-                  color="#424242"
+                  color="#005fb1"
                 ></v-pagination>
               </v-container>
             </v-flex>
@@ -55,16 +55,31 @@
         get() {
           return Number(this.$route.query.page)
         },
-        set(value) {
-          this.$store.dispatch('changeCurrentPage', value);
+        set(currPage) {
+          this.$store.dispatch('changeCurrentPage', currPage);
         }
       }
-    }
+    },
+    watch: {
+
+    },
+
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
+  .v-pagination__navigation .v-icon {
+    color: rgb(0, 95, 177);
+  }
+  .theme--light.v-pagination .v-pagination__item {
+    color: rgb(0, 95, 177);
+    font-weight: bold;
+    font-style: italic;
+  }
+  .theme--light.v-pagination .v-pagination__item--active {
+    color: #fff;
+  }
   .pagination-wr {
     margin: 50px 0;
     display: flex;

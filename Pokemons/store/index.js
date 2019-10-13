@@ -79,6 +79,7 @@ export const actions =  {
   },
 // requests end
   async actionLimit(context, limit) {
+    // console.log(context.state.currentPage);
     context.commit('setLimit', limit);
     return await context.dispatch('getPokemons');
   },

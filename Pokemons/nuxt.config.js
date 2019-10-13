@@ -1,9 +1,12 @@
 
 export default {
-  mode: 'universal',
+  mode: 'universal', // universal
   /*
   ** Headers of the page
   */
+  router: {
+    base: '/',
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -38,7 +41,6 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-
   ],
   /*
   ** Build configuration
@@ -50,10 +52,17 @@ export default {
     */
     extend(config, ctx) {
     }
+  },
+  dev: (process.env.NODE_ENV !== 'production'),
+  generate: {
+    exclude: [
+      /^(?=.*\bignore\b).*$/,
+    ],
   }
 }
 
 module.exports = {
+
   modules: [
     '@nuxtjs/axios',
   ],

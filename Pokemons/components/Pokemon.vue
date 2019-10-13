@@ -3,10 +3,12 @@
     <div class="avatar-wr">
       <div class="rotate-wr">
         <div class="front">
-          <img class="avatar" :src="front_default" alt />
+          <img class="avatar" v-if="front_default" :src="front_default" alt />
+          <img class="avatar" v-else src="../static/pika-f.png" alt />
           <div class="back-wr">
             <div class="back">
-              <img class="avatar" :src="back_default" alt />
+              <img class="avatar" v-if="back_default" :src="back_default" alt />
+              <img class="avatar" v-else src="../static/pika-b.png" alt />
             </div>
           </div>
         </div>
@@ -59,7 +61,7 @@
   $textColor: #b9bdc3;
   $cardWidth: 300px;
   $cardHeight: 300px;
-  $cardBackground: rgba(250, 250, 250, 0.6);
+  $cardBackground: rgba(0, 0, 0, 0.3);
 
 .pokemon-card {
   width: 100%;
@@ -84,10 +86,9 @@
   height: 100%;
   border: 1px solid $border;
   border-radius: 10px;
-  background-color: #424242;
   cursor: pointer;
-  // background-color: $cardBackground;
-  // box-shadow: 0px 0px 9px 6px rgba(250, 250, 250, 0.8);
+  background-color: $cardBackground;
+  box-shadow: 0px 0px 9px 6px rgba(250, 250, 250, 0.3);
 }
 .card {
 
@@ -100,18 +101,18 @@
 .name {
   font-size: 18px;
   margin-bottom: 10px;
-  color: #000;
+  color: #fff;
   span {
-    color: #000;
+    color: #fff;
     font-weight: bold;
     text-transform: uppercase;
   }
 }
 .descr {
-  color: #000;
+  color: #fff;
   font-style: italic;
   span {
-    color: #000;
+    color: #fff;
     font-style: normal;
     font-weight: 500;
   }
@@ -119,7 +120,6 @@
 .rotate-wr {
   margin: 15px 0;
   perspective: 1000px;
-  -webkit-perspective: 1000px;
 }
 .front {
   position: relative;
@@ -138,9 +138,16 @@
   height: 100%;
   text-align: center;
   transform: rotateY(180deg);
+  backface-visibility: hidden;
 }
 .back {
 
+}
+
+@media (max-width: 595px) {
+  .content-ul.list .avatar-wr {
+      width: 50%;
+  }
 }
 
 </style>
